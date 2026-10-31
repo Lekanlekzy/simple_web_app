@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, "Segoe UI", sans-serif;
+  font-family: Inter, 'Segoe UI', sans-serif;
   color: #e5eef7;
   background: linear-gradient(135deg, #0f172a, #1e293b 55%, #334155);
   line-height: 1.5;
@@ -57,7 +57,9 @@ button {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
 }
 

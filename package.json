@@ -3,12 +3,24 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "start": "node server.mjs",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "pretest:ci": "node -e \"require('node:fs').mkdirSync('coverage', { recursive: true })\"",
+    "test:ci": "node --experimental-test-coverage --test-coverage-include=server.mjs --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test",
+    "package:ci": "node scripts/package.mjs"
   },
   "devDependencies": {
-    "vite": "^5.4.10"
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
+    "vite": "8.3.5"
   }
 }
