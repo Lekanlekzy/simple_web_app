@@ -13,6 +13,59 @@ permissions: {}
 #   cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
 
 jobs:
+  repository-info:
+    name: Repository information
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Print repository and workflow metadata
+        shell: node {0}
+        env:
+          REPOSITORY_JSON: ${{ toJSON(github.event.repository) }}
+          EVENT_ACTION: ${{ github.event.action }}
+        run: |
+          const { appendFileSync } = require('node:fs');
+
+          const repository = JSON.parse(process.env.REPOSITORY_JSON);
+          const isOrganization = repository.owner?.type === 'Organization';
+          const info = {
+            owner_name: process.env.GITHUB_REPOSITORY_OWNER,
+            owner_id: process.env.GITHUB_REPOSITORY_OWNER_ID,
+            owner_type: repository.owner?.type ?? 'unknown',
+            organization_name: isOrganization ? process.env.GITHUB_REPOSITORY_OWNER : null,
+            organization_id: isOrganization ? process.env.GITHUB_REPOSITORY_OWNER_ID : null,
+            repository_name: repository.name,
+            repository_id: process.env.GITHUB_REPOSITORY_ID,
+            repository_full_name: process.env.GITHUB_REPOSITORY,
+            repository_url: repository.html_url,
+            visibility: repository.visibility ?? (repository.private ? 'private' : 'public'),
+            default_branch: repository.default_branch,
+            is_fork: repository.fork,
+            event_name: process.env.GITHUB_EVENT_NAME,
+            event_action: process.env.EVENT_ACTION || null,
+            ref: process.env.GITHUB_REF,
+            head_ref: process.env.GITHUB_HEAD_REF || null,
+            base_ref: process.env.GITHUB_BASE_REF || null,
+            commit_sha: process.env.GITHUB_SHA,
+            actor: process.env.GITHUB_ACTOR,
+            actor_id: process.env.GITHUB_ACTOR_ID,
+            workflow_ref: process.env.GITHUB_WORKFLOW_REF,
+            run_id: process.env.GITHUB_RUN_ID,
+            run_attempt: process.env.GITHUB_RUN_ATTEMPT,
+            run_url: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+          };
+
+          const report = JSON.stringify(info, null, 2);
+          console.log(report);
+          console.log('::group::Complete repository metadata from the triggering event');
+          console.log(JSON.stringify(repository, null, 2));
+          console.log('::endgroup::');
+          appendFileSync(
+            process.env.GITHUB_STEP_SUMMARY,
+            `### Repository information\n\n\`\`\`json\n${report}\n\`\`\`\n`,
+          );
+
   ci:
     if: >-
       ${{ github.event_name != 'pull_request'
