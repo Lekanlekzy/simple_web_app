@@ -39,7 +39,6 @@ jobs:
             repository_url: repository.html_url,
             visibility: repository.visibility ?? (repository.private ? 'private' : 'public'),
             default_branch: repository.default_branch,
-            is_fork: repository.fork,
             event_name: process.env.GITHUB_EVENT_NAME,
             event_action: process.env.EVENT_ACTION || null,
             ref: process.env.GITHUB_REF,
