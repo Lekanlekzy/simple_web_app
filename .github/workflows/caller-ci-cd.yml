@@ -33,8 +33,6 @@ jobs:
             owner_name: process.env.GITHUB_REPOSITORY_OWNER,
             owner_id: process.env.GITHUB_REPOSITORY_OWNER_ID,
             owner_type: repository.owner?.type ?? 'unknown',
-            organization_name: isOrganization ? process.env.GITHUB_REPOSITORY_OWNER : null,
-            organization_id: isOrganization ? process.env.GITHUB_REPOSITORY_OWNER_ID : null,
             repository_name: repository.name,
             repository_id: process.env.GITHUB_REPOSITORY_ID,
             repository_full_name: process.env.GITHUB_REPOSITORY,
