@@ -3,25 +3,634 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Web App</title>
+    <meta name="theme-color" content="#202823" />
+    <title>Zaynab Cooks — A Little Spice. A Lot of Love.</title>
     <meta
       name="description"
-      content="A simple JavaScript web app built with npm"
+      content="A little spice. A lot of love. Discover comforting Nigerian favourites, sweet little treats, and home-cooked happiness from Zaynab Cooks."
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/apple-touch-icon.png?v=9406b1e200"
+    />
+    <link rel="icon" sizes="151x147" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400..900;1,400..900&amp;display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <main class="app">
-      <section class="card">
-        <p class="eyebrow">Welcome</p>
-        <h1>Simple Web App</h1>
-        <p class="subtitle">Built with JavaScript and npm.</p>
+    <a class="skip-link" href="#menu">Skip to the menu</a>
+    <div class="announcement">
+      GOOD FOOD. GOOD MOOD. <span aria-hidden="true">✳</span> A LITTLE TASTE OF
+      HOME.
+    </div>
+    <header class="site-header" id="top">
+      <div class="container nav-wrap">
+        <a href="#top" class="brand" aria-label="Zaynab Cooks home">
+          <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path
+              d="M9 25h30c-1 10-7 15-15 15S10 35 9 25Z"
+              fill="currentColor"
+            />
+            <path
+              d="M7 23h34M18 8c-5 5 5 6 0 11m8-14c-5 6 5 8 0 14m8-10c-4 4 4 6 0 9"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span
+            >Zaynab<span class="brand-second"
+              >Cooks<span class="brand-dot">.</span></span
+            ></span
+          >
+        </a>
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <a href="#menu">The menu</a><a href="#story">Our little story</a
+          ><a href="#reviews">Kind words</a>
+        </nav>
+        <div class="nav-actions">
+          <button
+            class="basket-button"
+            data-open-cart
+            aria-label="Open your order basket"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 8h12l2 12H4L6 8Zm3 0V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span class="basket-count" data-cart-count>0</span>
+          </button>
+          <button class="button button-small nav-order" data-contact>
+            Let's talk food <span aria-hidden="true">↗</span>
+          </button>
+          <button
+            class="mobile-menu-toggle icon-button"
+            id="nav-toggle"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label="Open navigation"
+          >
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav
+        id="mobile-nav"
+        class="mobile-nav"
+        aria-label="Mobile navigation"
+        hidden
+      >
+        <a href="#menu">The menu</a><a href="#story">Our little story</a
+        ><a href="#reviews">Kind words</a><a href="#contact">Get in touch</a>
+      </nav>
+    </header>
 
-        <button id="greetButton" type="button">Click me</button>
-        <p id="message" aria-live="polite">Ready to go.</p>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow hero-eyebrow">
+              <span class="tiny-heart" aria-hidden="true">&#9825;</span> FROM
+              OUR HOME KITCHEN, WITH LOVE
+            </p>
+            <h1 id="hero-title">
+              A little spice.<br />A lot of
+              <span class="love-word"
+                >love<svg viewBox="0 0 200 20" aria-hidden="true">
+                  <path d="M5 12Q95 0 195 10M28 18q90-10 142-3" /></svg></span
+              ><span class="gold-dot">.</span>
+            </h1>
+            <p class="hero-description">
+              The comfort of home. The flavours you crave.<br
+                class="desktop-break"
+              />
+              Beautifully cooked, generously served, and made to make your day a
+              little more delicious.
+            </p>
+            <div class="hero-ctas">
+              <a class="button" href="#menu"
+                >Explore the menu <span aria-hidden="true">↗</span></a
+              ><button class="button button-ghost" data-contact>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M20 11.5a8 8 0 0 1-12 7L3 20l1.5-5a8 8 0 1 1 15.5-3.5Z"
+                  />
+                  <path
+                    d="M8 8c0 4 4 7 7 7l1-2-3-1-1 1-2-2 1-1-1-3-2 1Z"
+                  /></svg
+                >Order via WhatsApp
+              </button>
+            </div>
+            <div class="hero-promises">
+              <span><span aria-hidden="true">✧</span> Thoughtfully made</span
+              ><span
+                ><span aria-hidden="true">♡</span> Home-cooked goodness</span
+              >
+            </div>
+          </div>
+          <div class="hero-visual">
+            <img
+              class="hero-food"
+              src="/images/jollof-tray.jpg"
+              alt="A tray of Zaynab Cooks jollof rice with chicken, freshly prepared in her kitchen"
+              fetchpriority="high"
+              width="1200"
+              height="1600"
+            />
+            <div class="love-seal" aria-label="Small batches, big heart">
+              <span>SMALL BATCHES</span
+              ><svg viewBox="0 0 40 40" aria-hidden="true">
+                <path
+                  d="M20 34S3 24 3 13a9 9 0 0 1 17-4 9 9 0 0 1 17 4c0 11-17 21-17 21Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                /></svg
+              ><span>BIG HEART</span>
+            </div>
+            <div class="floating-note">
+              <span class="note-sparkle" aria-hidden="true">&#10022;</span>
+              <div>
+                <strong>Your happy plate awaits.</strong
+                ><span>Come hungry. Leave smiling.</span>
+              </div>
+            </div>
+            <span class="hero-caption"
+              >THE GOOD STUFF, FROM ZAYNAB'S KITCHEN</span
+            >
+          </div>
+        </div>
+        <div class="container hero-bottom">
+          <span>AUTHENTIC FLAVOUR. EVERY SINGLE BITE.</span
+          ><a href="#menu"
+            >SCROLL FOR SOMETHING DELICIOUS <span aria-hidden="true">↓</span></a
+          >
+        </div>
+      </section>
+
+      <div class="flavour-strip" aria-hidden="true">
+        <div>
+          <span>HOME-COOKED HAPPINESS</span><i>✳</i><span>FULL OF FLAVOUR</span
+          ><i>✳</i><span>MADE WITH LOVE</span><i>✳</i
+          ><span>GOOD FOOD, GOOD MOOD</span><i>✳</i>
+        </div>
+      </div>
+
+      <section
+        class="section menu-section"
+        id="menu"
+        aria-labelledby="menu-title"
+      >
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">THE GOOD STUFF</p>
+              <h2 id="menu-title">Your next <em>happy plate.</em></h2>
+            </div>
+            <p>
+              Comfort classics, bold flavours, and a little<br
+                class="desktop-break"
+              />
+              something for every kind of craving.
+            </p>
+          </div>
+          <div class="featured-menu" id="featured-menu"></div>
+          <div class="full-menu-heading">
+            <div>
+              <p class="eyebrow">A TABLE FULL OF POSSIBILITIES</p>
+              <h3>The full menu<span class="gold-dot">.</span></h3>
+              <p>
+                Trays for sharing. Little treats for keeping. Choose a portion,
+                then add it to your order. Proteins are ordered separately from
+                rice.
+              </p>
+            </div>
+            <a
+              class="button menu-list-link"
+              href="/images/menu.jpg"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M7 6h14M7 12h14M7 18h14M2 6h1M2 12h1M2 18h1"
+                  stroke-linecap="round"
+                /></svg
+              >Menu list <span aria-hidden="true">&#8599;</span></a
+            >
+          </div>
+          <label class="menu-search-wrap" for="menu-search"
+            ><span>Find your favourite</span
+            ><input
+              type="search"
+              id="menu-search"
+              placeholder="Jollof, efo riro, meat pies..."
+              autocomplete="off"
+          /></label>
+          <div class="menu-toolbar">
+            <div
+              class="menu-filters"
+              id="menu-filters"
+              role="group"
+              aria-label="Filter dishes by category"
+            ></div>
+            <span class="sample-label" id="sample-label"
+              >MENU PRICES IN CAD</span
+            >
+          </div>
+          <p class="menu-result-count" id="menu-result-count" role="status"></p>
+          <div class="menu-list" id="menu-grid"></div>
+          <p class="menu-disclaimer" id="menu-disclaimer">
+            Prices from the Zaynab Cooks menu. Please confirm availability,
+            allergens, and delivery details. Payment validates your order.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="craving-section"
+        id="cravings"
+        aria-labelledby="craving-title"
+      >
+        <div class="container craving-inner">
+          <div class="craving-art">
+            <span class="craving-orbit orbit-one" aria-hidden="true"></span
+            ><span class="craving-orbit orbit-two" aria-hidden="true"></span
+            ><span class="craving-emoji emoji-one" aria-hidden="true"
+              >&#127798;&#65039;</span
+            ><span class="craving-emoji emoji-two" aria-hidden="true"
+              >&#10022;</span
+            ><span class="craving-emoji emoji-three" aria-hidden="true"
+              >&#9825;</span
+            ><button
+              class="craving-plate craving-wheel"
+              id="craving-wheel-open"
+              aria-label="Open Craving Club and spin for a dish"
+            >
+              <span class="wheel-slices" aria-hidden="true"
+                ><b>&#127834;</b><b>&#127831;</b><b>&#129390;</b><b>&#127858;</b
+                ><b>&#127798;&#65039;</b><b>&#127844;</b></span
+              ><span class="wheel-center" aria-hidden="true">SPIN<br />ME</span>
+            </button>
+          </div>
+          <div class="craving-copy">
+            <p class="eyebrow">WELCOME TO THE CRAVING CLUB</p>
+            <h2 id="craving-title">
+              Big appetite.<br /><em>Tiny decisions.</em>
+            </h2>
+            <p>
+              Your stomach has entered the group chat.<br />Pick your mood. Give
+              it a spin. Meet your next food crush.
+            </p>
+            <button class="button button-cream" id="craving-open">
+              Spin my craving <span aria-hidden="true">&#8635;</span></button
+            ><span class="craving-footnote"
+              >Good taste. Zero decision fatigue. Membership: hungry.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section story-section"
+        id="story"
+        aria-labelledby="story-title"
+      >
+        <div class="container story-inner">
+          <div class="story-art">
+            <div
+              class="story-food food-photo"
+              role="img"
+              aria-label="Peppered chicken prepared by Zaynab Cooks"
+            ></div>
+            <div class="story-art-caption">
+              <span>GOOD FOOD IS OUR LOVE LANGUAGE.</span
+              ><svg viewBox="0 0 80 60" aria-hidden="true">
+                <path
+                  d="M7 8q45-5 50 28M45 28l13 13 10-17"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <span class="story-sticker"
+              >from my kitchen,<br /><em>with love.</em></span
+            >
+          </div>
+          <div class="story-copy">
+            <p class="eyebrow">A LITTLE ABOUT ZAYNAB</p>
+            <h2 id="story-title">
+              A home kitchen.<br />A whole lot of <em>heart.</em>
+            </h2>
+            <p>
+              Some of the best memories start around a table. A familiar aroma.
+              An extra spoonful. Someone saying, “Have you eaten?” and really
+              meaning it.
+            </p>
+            <p>
+              That's the feeling behind Zaynab Cooks. Authentic flavours,
+              thoughtfully chosen ingredients, and the kind of care that turns a
+              meal into a little moment of happiness.
+            </p>
+            <p class="story-signoff">
+              Made with care. Shared with love.
+              <span aria-hidden="true">♡</span>
+            </p>
+            <button class="text-button" data-contact>
+              Say hello to Zaynab <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section reviews-section"
+        id="reviews"
+        aria-labelledby="reviews-title"
+      >
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">THE LOVE COMES FULL CIRCLE</p>
+              <h2 id="reviews-title">
+                Kind words.<br class="mobile-break" />
+                <em>Full hearts.</em>
+              </h2>
+            </div>
+            <div class="review-heading-right">
+              <p>
+                Good food brings people together.<br />Their stories belong
+                here.
+              </p>
+              <div class="review-controls">
+                <button
+                  class="icon-button"
+                  id="reviews-prev"
+                  aria-label="Previous review"
+                >
+                  ←</button
+                ><button
+                  class="icon-button"
+                  id="reviews-next"
+                  aria-label="Next review"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+          <p class="reviews-preview-note">
+            REVIEW PREVIEWS · Illustrative words, ready for real customer
+            stories.
+          </p>
+          <div
+            class="reviews-track"
+            id="reviews-track"
+            tabindex="0"
+            aria-label="Sample customer review carousel"
+          ></div>
+        </div>
+      </section>
+
+      <section
+        class="contact-section"
+        id="contact"
+        aria-labelledby="contact-title"
+      >
+        <div class="container contact-inner">
+          <div>
+            <p class="eyebrow">THERE'S ALWAYS ROOM FOR SOMETHING GOOD</p>
+            <h2 id="contact-title">
+              Let's make your<br />day <em>delicious.</em>
+            </h2>
+            <p>
+              A quiet evening in, a family table, or just because.<br />Tell us
+              what you're craving. We'll take it from there.
+            </p>
+            <button class="button" data-contact>
+              Order via WhatsApp <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <div class="contact-detail-card">
+            <span class="contact-card-icon" aria-hidden="true">&#127858;</span>
+            <p class="eyebrow">FROM OUR KITCHEN TO YOUR TABLE</p>
+            <h3>Good things take<br />a little planning.</h3>
+            <p data-cooking-days></p>
+            <p data-delivery-details></p>
+            <div class="contact-card-divider"></div>
+            <p>Planning something a little bigger?</p>
+            <button class="text-button text-button-light" data-catering>
+              Let's talk food for your occasion
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
       </section>
     </main>
 
+    <footer class="site-footer">
+      <div class="container footer-top">
+        <a class="footer-brand" href="#top">Zaynab Cooks<span>.</span></a>
+        <nav aria-label="Footer navigation">
+          <a href="#menu">The menu</a><a href="#story">Our story</a
+          ><a href="#reviews">Kind words</a
+          ><span id="instagram-slot">Social details coming soon</span>
+        </nav>
+        <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+      </div>
+      <div class="container footer-bottom">
+        <span
+          >© <span id="year">2026</span> Zaynab Cooks. Made with love,
+          always.</span
+        ><span>A little taste of home. A whole lot of happiness.</span>
+      </div>
+    </footer>
+
+    <button class="floating-basket" id="floating-basket" data-open-cart hidden>
+      <span class="floating-basket-icon" aria-hidden="true">＋</span
+      ><span>Your happy plate <strong id="floating-basket-count"></strong></span
+      ><span id="floating-basket-total"></span><span aria-hidden="true">↗</span>
+    </button>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog id="cart-dialog" class="cart-dialog" aria-labelledby="cart-title">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">SOMETHING GOOD IS ON THE WAY</p>
+          <h2 id="cart-title">Your happy plate<span>.</span></h2>
+        </div>
+        <button
+          class="icon-button dialog-close"
+          data-close-dialog
+          aria-label="Close your basket"
+        >
+          ×
+        </button>
+      </div>
+      <div class="cart-body">
+        <div id="cart-items"></div>
+        <div id="cart-form">
+          <fieldset class="fulfilment">
+            <legend>How would you like it?</legend>
+            <label
+              ><input
+                type="radio"
+                name="method"
+                value="pickup"
+                checked
+              />Pickup</label
+            ><label
+              ><input
+                type="radio"
+                name="method"
+                value="delivery"
+              />Delivery</label
+            >
+          </fieldset>
+          <label class="field-label" for="customer-name"
+            >Your name <span>(optional)</span></label
+          ><input
+            class="text-input"
+            id="customer-name"
+            name="name"
+            autocomplete="given-name"
+            maxlength="80"
+            placeholder="What should we call you?"
+          /><label class="field-label" for="order-note"
+            >A little note <span>(optional)</span></label
+          ><textarea
+            class="text-input"
+            id="order-note"
+            maxlength="500"
+            rows="3"
+            placeholder="Preferred date, spice level, or a question for Zaynab…"
+          ></textarea>
+          <p class="allergen-note">
+            Food allergies? Please discuss ingredients and preparation with
+            Zaynab before ordering.
+          </p>
+        </div>
+      </div>
+      <div class="cart-footer" id="cart-footer">
+        <div class="cart-total">
+          <span id="cart-total-label">Food subtotal</span
+          ><strong id="cart-total"></strong>
+        </div>
+        <p>
+          Final prices, delivery charges, availability, and timing are confirmed
+          by Zaynab. Adding to your basket doesn't place an order.
+        </p>
+        <a
+          class="button checkout-button"
+          id="whatsapp-checkout"
+          target="_blank"
+          rel="noopener noreferrer"
+          hidden
+          >Order via WhatsApp <span aria-hidden="true">&#8599;</span></a
+        >
+        <p class="contact-pending" id="cart-contact-pending" hidden>
+          Please contact Zaynab to confirm your order details.
+        </p>
+        <details class="order-preview">
+          <summary>Preview your order message</summary>
+          <pre id="order-message"></pre>
+        </details>
+      </div>
+    </dialog>
+
+    <dialog
+      id="craving-dialog"
+      class="craving-dialog"
+      aria-labelledby="craving-dialog-title"
+    >
+      <button
+        class="icon-button dialog-close"
+        data-close-dialog
+        aria-label="Close the craving picker"
+      >
+        ×
+      </button>
+      <div class="craving-dialog-intro">
+        <p class="eyebrow">YOUR CRAVING, OUR LITTLE MISSION</p>
+        <h2 id="craving-dialog-title">What's your <em>food mood?</em></h2>
+        <p>No wrong answers. Especially when food is involved.</p>
+      </div>
+      <div class="mood-options" id="mood-options">
+        <button data-mood="comfort">
+          <span aria-hidden="true">&#127834;</span><strong>Comfort me</strong
+          ><small>A little taste of home</small></button
+        ><button data-mood="spicy">
+          <span aria-hidden="true">&#127798;&#65039;</span
+          ><strong>Bring the heat</strong
+          ><small>Bold is my love language</small></button
+        ><button data-mood="treat">
+          <span aria-hidden="true">&#129390;</span><strong>Treat me</strong
+          ><small>A snack break? Say less.</small></button
+        ><button data-mood="all">
+          <span aria-hidden="true">&#10024;</span><strong>Surprise me</strong
+          ><small>Let the cravings decide</small>
+        </button>
+      </div>
+      <div class="craving-spinner" id="craving-spinner" tabindex="-1" hidden>
+        <div class="craving-spinning-plate" aria-hidden="true">
+          <span id="spinning-emoji">&#127834;</span>
+        </div>
+        <h3 id="spinning-name">Something delicious...</h3>
+        <p id="spin-caption" role="status">
+          Consulting the craving committee...
+        </p>
+      </div>
+      <div id="craving-result" hidden aria-live="polite"></div>
+    </dialog>
+
+    <dialog
+      id="contact-dialog"
+      class="contact-dialog"
+      aria-labelledby="contact-dialog-title"
+    >
+      <button
+        class="icon-button dialog-close"
+        data-close-dialog
+        aria-label="Close contact information"
+      >
+        ×</button
+      ><span class="contact-dialog-heart" aria-hidden="true">&#9825;</span>
+      <p class="eyebrow">GOOD FOOD STARTS WITH A HELLO</p>
+      <h2 id="contact-dialog-title">
+        A little chat.<br />Something <em>delicious.</em>
+      </h2>
+      <p data-cooking-days></p>
+      <p data-delivery-details></p>
+      <a
+        class="button"
+        id="contact-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden
+        >Order via WhatsApp <span aria-hidden="true">&#8599;</span></a
+      >
+      <p id="contact-unavailable" class="contact-unavailable">
+        Zaynab's contact details are coming soon. In the meantime, explore a
+        little menu inspiration and build your happy plate.
+      </p>
+      <button class="button button-outline" id="contact-explore">
+        Back to the good stuff <span aria-hidden="true">↗</span>
+      </button>
+    </dialog>
+
+    <noscript
+      ><div class="noscript-notice">
+        Welcome to Zaynab Cooks. Enable JavaScript to explore the interactive
+        menu and build an order.
+      </div></noscript
+    >
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
