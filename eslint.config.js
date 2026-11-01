@@ -14,6 +14,6 @@ export default [
   },
   {
     files: ['src/**/*.js'],
-    languageOptions: { globals: { document: 'readonly' } },
+    languageOptions: { globals: { document: 'readonly', window: 'readonly' } },
   },
 ];

@@ -1,6 +1,6 @@
-# Simple Web App
+# Zaynab Cooks
 
-A small Vite frontend with a Node server for the Stage 1 CI/CD example. The page and button behavior are intentionally simple so the application can be improved later.
+A warm, premium home-food storefront built with Vite and a Node server. It includes a searchable 40-dish tray menu, real kitchen photography, a basket with explicit portion sizes, WhatsApp order requests, review previews, Nunito from Google Fonts, and a spinning Craving Club. Business details and the menu live in [src/catalog.js](src/catalog.js); see [food asset and content setup](docs/food-assets.md) for photo provenance, menu setup, and the remaining sample reviews.
 
 ## Local development
 

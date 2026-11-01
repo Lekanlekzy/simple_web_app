@@ -23,7 +23,7 @@ test('health endpoint and built page are available', async () => {
   const response = await fetch(base);
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Simple Web App/);
+  assert.match(html, /Zaynab Cooks/);
   for (const [, asset] of html.matchAll(
     /(?:src|href)=["'](\/assets\/[^"']+)["']/g,
   )) {
@@ -73,4 +73,30 @@ test('health reports the release revision and missing assets', async () => {
     await new Promise((resolve) => app.close(resolve));
     rmSync(directory, { recursive: true, force: true });
   }
+});
+
+test('food photography is available with the correct image content type', async () => {
+  for (const image of [
+    'jollof-tray.jpg',
+    'peppered-chicken.jpg',
+    'chicken-suya.jpg',
+    'meatpie.jpg',
+    'menu.jpg',
+  ]) {
+    const response = await fetch(`${base}/images/${image}`);
+    assert.equal(response.status, 200);
+    assert(response.headers.get('content-type').startsWith('image/jpeg'));
+    assert((await response.arrayBuffer()).byteLength > 1000);
+  }
+});
+
+test('built page loads Nunito from Google Fonts instead of local font copies', async () => {
+  const response = await fetch(base);
+  const html = await response.text();
+  assert.match(
+    html,
+    /fonts\.googleapis\.com\/css2\?family=Nunito:ital,wght@0,400\.\.900;1,400\.\.900/,
+  );
+  assert.match(html, /fonts\.gstatic\.com/);
+  assert.doesNotMatch(html, /\/fonts\/|copy-enquiry|copy-order/);
 });
