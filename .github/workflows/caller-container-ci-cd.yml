@@ -38,18 +38,19 @@ jobs:
       # image_name: ghcr.io/lekanlekzy/zaynab_cook
       image_name: zaynab_cook
       package_app: false
-      publish_image: >-
-        ${{ github.event_name == 'pull_request'
-            && github.event.action == 'closed'
-            && github.event.pull_request.merged == true
-            && github.event.repository.default_branch != ''
-            && github.event.pull_request.base.ref == github.event.repository.default_branch
-            && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-            && github.sha == github.event.pull_request.merge_commit_sha
-            && github.event.pull_request.head.repo.full_name == github.repository
-            && github.repository == github.event.repository.full_name
-            && github.event.repository.fork != true
-            && github.actor != 'dependabot[bot]' }}
+      publish_image: true
+      # publish_image: >-
+      #   ${{ github.event_name == 'pull_request'
+      #       && github.event.action == 'closed'
+      #       && github.event.pull_request.merged == true
+      #       && github.event.repository.default_branch != ''
+      #       && github.event.pull_request.base.ref == github.event.repository.default_branch
+      #       && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+      #       && github.sha == github.event.pull_request.merge_commit_sha
+      #       && github.event.pull_request.head.repo.full_name == github.repository
+      #       && github.repository == github.event.repository.full_name
+      #       && github.event.repository.fork != true
+      #       && github.actor != 'dependabot[bot]' }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
