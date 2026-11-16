@@ -48,7 +48,7 @@ Cloud resources and repository variables must be configured before the first suc
 `.github/workflows/caller-container-ci-cd.yml` is an additional caller using `Lekanlekzy/stage1-devsecops@Adhoc-CI-CD` for both reusable workflows:
 
 - `reusable-app-ci.yml` runs Node checks, Sonar, dependency/secret scans, and a Docker build with Trivy. Open PRs and manual runs validate without publishing or deploying.
-- After a same-repository PR merges into the actual default branch, CI rebuilds that exact merge commit and publishes its scanned image to `ghcr.io/lekanlekzy/simple_web_app`. With `needs: ci`, `reusable-container-cd.yml` deploys that image by its immutable digest to Azure Container Apps and checks `/healthz` for `status: "ok"` and the same commit.
+- After a same-repository PR merges into the actual default branch, CI rebuilds that exact merge commit and publishes its scanned image to `zaynab_cook`. With `needs: ci`, `reusable-container-cd.yml` deploys that image by its immutable digest to Azure Container Apps and checks `/healthz` for `status: "ok"` and the same commit.
 
 The existing ZIP/App Service caller remains separate. With both workflows enabled, matching PR events run both CI paths, including two Sonar analyses; a merge can deploy to both configured Azure targets. Choose the delivery path you want before enabling both in GitHub. The central references use the case-sensitive `Adhoc-CI-CD` branch; they do not select an application checkout branch.
 
@@ -61,7 +61,7 @@ Configure these **repository variables** for the container caller:
 
 Use the existing named `SONAR_TOKEN` secret for `Lekanlekzy_simple_web_app`. Create the GitHub `non-production` Environment and its matching Azure federated identity. Grant that identity access to update the Container App and its ingress traffic. Provision external HTTPS ingress targeting port `8080`, readiness probes, and GHCR image pull access on Azure before deploying. For a private GHCR package, configure a read-only package credential on Azure; the workflow does not pass a registry secret to CD. Multiple-revision deployments send all ingress traffic to the new revision. Cloud deployment and rollback are unverified until real runs succeed.
 
-The Dockerfile uses separate Node 24 build and runtime stages. It installs locked build dependencies, creates the Vite assets, and stamps `release.json` from CI's `APP_REVISION` build argument. The final image runs as `node` with only the built site, server, and revision file. Central CI adds the source/revision OCI labels. Generated output and local configuration are excluded by `.dockerignore`.
+The Dockerfile uses separate Node 24 build and runtime stages. It installs locked build dependencies, creates the Vite assets, and stamps `release.json` from CI's `APP_REVISION` build argument. The final image runs as `node` with only the built site, server, and revision file. The Dockerfile removes the base image's bundled npm and npx from the runtime because the server starts directly with `node server.mjs`; npm stays in the builder. This removes the unused npm dependencies reported by Trivy without changing the blocking scan policy. See the [Node image guidance on runtimes without package managers](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#smaller-images-without-npmyarn). Central CI adds the source/revision OCI labels. Generated output and local configuration are excluded by `.dockerignore`.
 
 To build and run locally with Docker Desktop configured for Linux containers:
 

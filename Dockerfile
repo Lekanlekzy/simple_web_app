@@ -13,6 +13,11 @@ RUN node -e "require('node:fs').writeFileSync('release.json', JSON.stringify({ r
 
 FROM node:24-bookworm-slim AS runtime
 
+# npm is a build tool here; remove its unused dependencies from the runtime.
+RUN rm -rf /usr/local/lib/node_modules/npm \
+    /usr/local/bin/npm \
+    /usr/local/bin/npx
+
 ENV NODE_ENV=production \
     PORT=8080
 WORKDIR /app

@@ -35,7 +35,8 @@ jobs:
       sonar_project_key: Lekanlekzy_simple_web_app
       container_context: .
       run_container_checks: true
-      image_name: Zaynab_cook
+      # image_name: ghcr.io/lekanlekzy/zaynab_cook
+      image_name: zaynab_cook
       package_app: false
       publish_image: >-
         ${{ github.event_name == 'pull_request'
