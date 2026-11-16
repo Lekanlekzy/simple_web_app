@@ -35,6 +35,7 @@ jobs:
       sonar_project_key: Lekanlekzy_simple_web_app
       container_context: .
       run_container_checks: true
+      image_name: Zaynab_cook
       package_app: false
       publish_image: >-
         ${{ github.event_name == 'pull_request'
@@ -76,7 +77,6 @@ jobs:
       image_uri: ${{ needs.ci.outputs.image_uri }}
       image_digest: ${{ needs.ci.outputs.image_digest }}
       app_revision: ${{ github.sha }}
-      image_name: Zaynab_cook
       azure_container_app_name: ${{ vars.AZURE_CONTAINER_APP_NAME }}
       azure_container_name: ${{ vars.AZURE_CONTAINER_NAME }}
       azure_resource_group: ${{ vars.AZURE_RESOURCE_GROUP }}
