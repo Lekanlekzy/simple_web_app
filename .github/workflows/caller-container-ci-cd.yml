@@ -1,0 +1,87 @@
+name: Application container CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.action != 'closed' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+
+jobs:
+  ci:
+    name: Container CI
+    if: >-
+      ${{ github.event.repository.fork != true
+          && github.actor != 'dependabot[bot]'
+          && (github.event_name != 'pull_request'
+              || (github.event.pull_request.head.repo.full_name == github.repository
+                  && (github.event.action != 'closed' || github.event.pull_request.merged == true))) }}
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+      security-events: write
+      packages: write
+    uses: Lekanlekzy/stage1-devsecops/.github/workflows/reusable-app-ci.yml@Adhoc-CI-CD
+    with:
+      language: node
+      node_version: '24'
+      node_typescript: false
+      sonar_project_key: Lekanlekzy_simple_web_app
+      container_context: .
+      run_container_checks: true
+      image_name: ghcr.io/lekanlekzy/zaynab_cook
+      publish_image: true
+      package_app: false
+      # publish_image: >-
+      #   ${{ github.event_name == 'pull_request'
+      #       && github.event.action == 'closed'
+      #       && github.event.pull_request.merged == true
+      #       && github.event.repository.default_branch != ''
+      #       && github.event.pull_request.base.ref == github.event.repository.default_branch
+      #       && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+      #       && github.sha == github.event.pull_request.merge_commit_sha
+      #       && github.event.pull_request.head.repo.full_name == github.repository
+      #       && github.repository == github.event.repository.full_name
+      #       && github.event.repository.fork != true
+      #       && github.actor != 'dependabot[bot]' }}
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy:
+    name: Deploy container
+    needs: ci
+    if: >-
+      ${{ github.event_name == 'pull_request'
+          && github.event.action == 'closed'
+          && github.event.pull_request.merged == true
+          && github.event.repository.default_branch != ''
+          && github.event.pull_request.base.ref == github.event.repository.default_branch
+          && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+          && github.sha == github.event.pull_request.merge_commit_sha
+          && github.event.pull_request.head.repo.full_name == github.repository
+          && github.repository == github.event.repository.full_name
+          && github.event.repository.fork != true
+          && github.actor != 'dependabot[bot]' }}
+    concurrency:
+      group: container-deployment-non-production
+      cancel-in-progress: false
+    permissions:
+      id-token: write
+    uses: Lekanlekzy/stage1-devsecops/.github/workflows/reusable-container-cd.yml@Adhoc-CI-CD
+    with:
+      image_uri: ${{ needs.ci.outputs.image_uri }}
+      image_digest: ${{ needs.ci.outputs.image_digest }}
+      app_revision: ${{ github.sha }}
+      azure_container_app_name: ${{ vars.AZURE_CONTAINER_APP_NAME }}
+      azure_container_name: ${{ vars.AZURE_CONTAINER_NAME }}
+      azure_resource_group: ${{ vars.AZURE_RESOURCE_GROUP }}
+      azure_client_id: ${{ vars.AZURE_CLIENT_ID }}
+      azure_tenant_id: ${{ vars.AZURE_TENANT_ID }}
+      azure_subscription_id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      health_check_path: /healthz
