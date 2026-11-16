@@ -43,6 +43,36 @@ Configure repository variables `SONAR_PROJECT_KEY`, `AZURE_WEBAPP_NAME`, `AZURE_
 
 Cloud resources and repository variables must be configured before the first successful deployment. The workflow does not provision resources. Health-check failure is reported without automatic rollback; the runbook redeploys a retained package from a previous successful run.
 
+## Container CI/CD
+
+`.github/workflows/caller-container-ci-cd.yml` is an additional caller using `Lekanlekzy/stage1-devsecops@Adhoc-CI-CD` for both reusable workflows:
+
+- `reusable-app-ci.yml` runs Node checks, Sonar, dependency/secret scans, and a Docker build with Trivy. Open PRs and manual runs validate without publishing or deploying.
+- After a same-repository PR merges into the actual default branch, CI rebuilds that exact merge commit and publishes its scanned image to `ghcr.io/lekanlekzy/simple_web_app`. With `needs: ci`, `reusable-container-cd.yml` deploys that image by its immutable digest to Azure Container Apps and checks `/healthz` for `status: "ok"` and the same commit.
+
+The existing ZIP/App Service caller remains separate. With both workflows enabled, matching PR events run both CI paths, including two Sonar analyses; a merge can deploy to both configured Azure targets. Choose the delivery path you want before enabling both in GitHub. The central references use the case-sensitive `Adhoc-CI-CD` branch; they do not select an application checkout branch.
+
+Configure these **repository variables** for the container caller:
+
+- `AZURE_CONTAINER_APP_NAME`: existing Azure Container App.
+- `AZURE_CONTAINER_NAME`: container within that app.
+- `AZURE_RESOURCE_GROUP`: resource group containing the app.
+- `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`: Azure OIDC identity configuration.
+
+Use the existing named `SONAR_TOKEN` secret for `Lekanlekzy_simple_web_app`. Create the GitHub `non-production` Environment and its matching Azure federated identity. Grant that identity access to update the Container App and its ingress traffic. Provision external HTTPS ingress targeting port `8080`, readiness probes, and GHCR image pull access on Azure before deploying. For a private GHCR package, configure a read-only package credential on Azure; the workflow does not pass a registry secret to CD. Multiple-revision deployments send all ingress traffic to the new revision. Cloud deployment and rollback are unverified until real runs succeed.
+
+The Dockerfile uses separate Node 24 build and runtime stages. It installs locked build dependencies, creates the Vite assets, and stamps `release.json` from CI's `APP_REVISION` build argument. The final image runs as `node` with only the built site, server, and revision file. Central CI adds the source/revision OCI labels. Generated output and local configuration are excluded by `.dockerignore`.
+
+To build and run locally with Docker Desktop configured for Linux containers:
+
+```powershell
+$revision = git rev-parse HEAD
+docker build --build-arg "APP_REVISION=$revision" -t simple-web-app:local .
+docker run --rm -p 8080:8080 simple-web-app:local
+```
+
+Then open `http://localhost:8080/healthz` in another terminal or browser and confirm its revision. Docker builds, Trivy scanning, and Azure deployment have not been verified locally for this change.
+
 ## Supply-chain evidence
 
 Stage 1 records the deployment ZIP's SHA-256 and source revision. Its tests exercise the built site and server before packaging; the final ZIP itself is not yet runtime-tested. ZIP is the Azure Node deployment format, rather than a format required for every language.
